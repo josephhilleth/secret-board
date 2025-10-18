@@ -1,6 +1,6 @@
-const addressFromEnv = (import.meta as any).env?.VITE_SECRET_BOARD_ADDRESS as `0x${string}` | undefined;
+// const addressFromEnv = (import.meta as any).env?.VITE_SECRET_BOARD_ADDRESS as `0x${string}` | undefined;
 
-export const CONTRACT_ADDRESS = (addressFromEnv ?? '0x0000000000000000000000000000000000000000') as `0x${string}`;
+export const CONTRACT_ADDRESS =  '0x10Bc5baC714bB6298f002B087D02De17b14a1367' as `0x${string}`;
 
 export const CONTRACT_ABI = [
   {

@@ -50,13 +50,45 @@ export function BoardApp() {
       return [];
     }
 
-    return (messagesData as readonly any[]).map((item, index) => ({
-      id: index,
-      author: item[0] as string,
-      timestamp: Number(item[1]),
-      encryptedContent: item[2] as string,
-      encryptedKey: item[3] as string,
-    }));
+    return (messagesData as readonly any[]).map((item, index) => {
+      const value = item as any;
+      const author = (value?.author ?? value?.[0] ?? ZERO_ADDRESS) as string;
+      const rawTimestamp = value?.timestamp ?? value?.[1] ?? 0;
+      const rawEncryptedContent = value?.encryptedContent ?? value?.[2] ?? '';
+      const rawEncryptedKey = value?.encryptedKey ?? value?.[3] ?? '';
+
+      const numericTimestamp = (() => {
+        if (typeof rawTimestamp === 'bigint') {
+          return Number(rawTimestamp);
+        }
+        if (typeof rawTimestamp === 'number') {
+          return rawTimestamp;
+        }
+        if (typeof rawTimestamp === 'string' && rawTimestamp.length > 0) {
+          const parsed = Number(rawTimestamp);
+          return Number.isFinite(parsed) ? parsed : 0;
+        }
+        return 0;
+      })();
+
+      const encryptedKey = (() => {
+        if (typeof rawEncryptedKey === 'string') {
+          return rawEncryptedKey;
+        }
+        if (typeof rawEncryptedKey === 'bigint') {
+          return `0x${rawEncryptedKey.toString(16).padStart(64, '0')}`;
+        }
+        return String(rawEncryptedKey ?? '');
+      })();
+
+      return {
+        id: index,
+        author,
+        timestamp: numericTimestamp,
+        encryptedContent: String(rawEncryptedContent ?? ''),
+        encryptedKey,
+      };
+    });
   }, [messagesData]);
 
   const canSubmit = Boolean(
