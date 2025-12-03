@@ -2,13 +2,13 @@
 pragma solidity ^0.8.24;
 
 import {FHE, eaddress, externalEaddress} from "@fhevm/solidity/lib/FHE.sol";
-import {SepoliaConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
+import {ZamaEthereumConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 
 /**
  * @title SecretBoard
  * @notice Stores encrypted messages whose decryption keys become publicly decryptable through Zama FHE.
  */
-contract SecretBoard is SepoliaConfig {
+contract SecretBoard is ZamaEthereumConfig {
     struct Message {
         address author;
         uint256 timestamp;
